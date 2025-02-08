@@ -94,6 +94,8 @@ public class Cave extends BattleLoc
                             --obstacleQuality;
                             setObstacleQuality(obstacleQuality);
                             System.out.println("Kalan " + obstacle.getName() + " sayısı: " + getObstacleQuality());
+                            player.setMoney(player.getMoney()+7);
+                            System.out.println("Güncel paranız: " + player.getMoney());
                             break;
                         }
                         if (obstacle.getHealty() > 0)

@@ -18,8 +18,8 @@ public class ToolStore extends NormalLoc
     @Override
     public boolean onLocation()
     {
-        menu();
-        return true;
+          menu();
+          return true;
     }
     public void menu()
     {
@@ -28,9 +28,10 @@ public class ToolStore extends NormalLoc
                 Lütfen Ne alacağınızı seçiniz:\s
                 1-Silahlar
                 2-Zırhlar
+                3-Bilgileri Görüntüle
                 0-Çıkış""");
         int choose=input.nextInt();
-        while (choose<0|| choose>2)
+        while (choose<0|| choose>3)
         {
             System.out.println("Lütfen geçerli bir seçim yapınız: ");
             choose=input.nextInt();
@@ -45,11 +46,20 @@ public class ToolStore extends NormalLoc
                 armorInformations();
                 buyArmor();
                 break;
+            case 3:
+                showPlayerInformations();
+                break;
             case 0:
                 player.selectLocation();
                 break;
 
         }
+    }
+    public void showPlayerInformations()
+    {
+        System.out.println("Momey: "+player.getMoney());
+        System.out.println("Healty: "+player.getHealty());
+
     }
     public  void weaponInformations()
     {

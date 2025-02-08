@@ -95,6 +95,8 @@ public class River extends BattleLoc
                             --obstacleQuality;
                             setObstacleQuality(obstacleQuality);
                             System.out.println("Kalan " + obstacle.getName() + " sayısı: " + getObstacleQuality());
+                            player.setMoney(player.getMoney()+6);
+                            System.out.println("Güncel paranız: "+player.getMoney());
                             break;
                         }
                         if (obstacle.getHealty() > 0) {
