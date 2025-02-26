@@ -24,10 +24,10 @@ public class UserDAO
             PreparedStatement queryPrepared=this.connection.prepareStatement(query);
             queryPrepared.setString(1, email);
             queryPrepared.setString(2, password);
-            ResultSet resault=queryPrepared.executeQuery();
+            ResultSet result=queryPrepared.executeQuery();
 
-            while (resault.next()){
-               user=this.match(resault);
+            while (result.next()){
+               user=this.match(result);
             }
 
         }catch (SQLException sqlException){System.out.println(sqlException.getMessage());}

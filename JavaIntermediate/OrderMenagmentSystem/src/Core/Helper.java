@@ -9,6 +9,7 @@ public class Helper
 
 
   public static void setTheme(){
+
      for (UIManager.LookAndFeelInfo info:UIManager.getInstalledLookAndFeels()){
          System.out.println(info.getName());
          if (info.getName().equals("Nimbus")) {
@@ -24,11 +25,7 @@ public class Helper
      }
   }
 
-  public static void setTextConfiguration(){
-      UIManager.put("OptionPane.okButtonText","TAMAM");
-      UIManager.put("OptionPane.yesButtonText","EVET");
-      UIManager.put("OptionPane.noButtonText","HAYIR");
-  }
+
   public static boolean isFieldEmpty(JTextField textField){
       return textField.getText().trim().isEmpty();
   }
@@ -40,55 +37,62 @@ public class Helper
       return false;
   }
 
-
   public static boolean isEmailValid(String email){
 
 
-      if (email==null || email.trim().isEmpty()) return false;
-      if (!email.contains("@")) return false;
+        if (email==null || email.trim().isEmpty()) return false;
+        if (!email.contains("@")) return false;
 
-      String parts[]=email.split("@");
+        String parts[]=email.split("@");
 
-      if (parts.length!=2) return false;
-      if (parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) return false;
-      if (!parts[1].trim().contains(".")) return false;
+        if (parts.length!=2) return false;
+        if (parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) return false;
+        if (!parts[1].trim().contains(".")) return false;
 
-      String [] lastParts=parts[1].split("\\.");
+        String [] lastParts=parts[1].split("\\.");
 
-      if (lastParts.length!=2) return false;
-      if (lastParts[1].trim().isEmpty()) return false;
+        if (lastParts.length!=2) return false;
+        if (lastParts[1].trim().isEmpty()) return false;
 
-      return true;
-  }
+        return true;
+    }
 
   public static void showAutoMessage(String whatHappened){
-      String message;
-      String title;
+        String message;
+        String title;
 
-      switch (whatHappened){
-          case "fill" ->{
-              message="Lütfen tüm alanları doldurunuz";
-              title="UYARI";
-              JOptionPane.showMessageDialog(null,message,title,JOptionPane.WARNING_MESSAGE);
-          }
-          case "done" ->{
-              message="İşlem başarılı";
-              title="BAŞARILI";
-              JOptionPane.showMessageDialog(null,message,title,JOptionPane.INFORMATION_MESSAGE);
-          }
-          case "error" ->{
-              message="Bir hata oluştu";
-              title="HATA";
-              JOptionPane.showMessageDialog(null,message,title,JOptionPane.ERROR_MESSAGE);
+        switch (whatHappened){
+            case "fill" ->{
+                message="Lütfen tüm alanları doldurunuz";
+                title="UYARI";
+                JOptionPane.showMessageDialog(null,message,title,JOptionPane.WARNING_MESSAGE);
+            }
+            case "done" ->{
+                message="İşlem başarılı";
+                title="BAŞARILI";
+                JOptionPane.showMessageDialog(null,message,title,JOptionPane.INFORMATION_MESSAGE);
+            }
+            case "error" ->{
+                message="Bir hata oluştu";
+                title="HATA";
+                JOptionPane.showMessageDialog(null,message,title,JOptionPane.ERROR_MESSAGE);
 
-          }
-          default -> {
-              message=whatHappened;
-              title="UYARI";
-              JOptionPane.showMessageDialog(null,message,title,JOptionPane.WARNING_MESSAGE);
-          }
-      }
-  }
+            }
+            default -> {
+                message=whatHappened;
+                title="UYARI";
+                JOptionPane.showMessageDialog(null,message,title,JOptionPane.WARNING_MESSAGE);
+            }
+        }
+    }
+
+
+  public static void setTextConfiguration(){
+        UIManager.put("OptionPane.okButtonText","TAMAM");
+        UIManager.put("OptionPane.yesButtonText","EVET");
+        UIManager.put("OptionPane.noButtonText","HAYIR");
+    }
+
 
   public static boolean confirm(String message){
       String msg;
