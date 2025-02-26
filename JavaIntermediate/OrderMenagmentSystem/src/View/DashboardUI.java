@@ -29,7 +29,9 @@ public class DashboardUI extends JFrame {
     private JButton btn_filter_clear;
     private JButton btn_filter_addnew;
 
-    DefaultTableModel tableModel;
+    private DefaultTableModel tableModel;
+    private JPopupMenu popupMenu;
+
 
     private CustomerController customerController;
 
@@ -53,6 +55,7 @@ public class DashboardUI extends JFrame {
 
 
         this.tableModel=new DefaultTableModel();
+        this.popupMenu=new JPopupMenu();
 
         this.customerController=new CustomerController();
 
@@ -65,6 +68,7 @@ public class DashboardUI extends JFrame {
 
 
         loadCustomers(null);
+        loadPopUpMenu();
 
     }
 
@@ -78,7 +82,7 @@ public class DashboardUI extends JFrame {
         //Tabloyu sıfırladık
         DefaultTableModel clearModel=(DefaultTableModel) this.tbl_customers.getModel();
         clearModel.setRowCount(0);
-        
+
         this.tableModel.setColumnIdentifiers(tableRows);
         for (Customer customer: customers) {
             Object [] rowObject ={
@@ -95,6 +99,12 @@ public class DashboardUI extends JFrame {
         this.tbl_customers.getTableHeader().setReorderingAllowed(false);
         this.tbl_customers.getColumnModel().getColumn(0).setMaxWidth(50);
         this.tbl_customers.setEnabled(false);
+    }
+
+    public void loadPopUpMenu(){
+        this.popupMenu.add("SİL");
+        this.popupMenu.add("GÜNCELLE");
+        this.tbl_customers.setComponentPopupMenu(this.popupMenu);
     }
 }
 
