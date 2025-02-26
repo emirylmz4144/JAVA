@@ -8,6 +8,8 @@ import Entity.User;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
 public class DashboardUI extends JFrame {
@@ -70,9 +72,11 @@ public class DashboardUI extends JFrame {
         loadCustomers(null);
         loadPopUpMenu();
 
+
     }
 
     public void loadCustomers(ArrayList<Customer> customers){
+
         Object [] tableRows=new Object[]{"ID","AD","SOYAD","TİP","NUMARA","E-POSTA","ADRES"};
 
         if (customers==null){
@@ -102,8 +106,26 @@ public class DashboardUI extends JFrame {
     }
 
     public void loadPopUpMenu(){
-        this.popupMenu.add("SİL");
-        this.popupMenu.add("GÜNCELLE");
+        //Tabloda üzerine tıklanan hücrenin düzenlenmesi için mouse dinleyici koyuyoruz
+        tbl_customers.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //Üzerine tıklananı seçiyor
+                int selectedRow=tbl_customers.rowAtPoint(e.getPoint());
+                //Üzerine tıklananı tabloda düzenlenebilir elemean olarak ayarlıyor
+                tbl_customers.setRowSelectionInterval(selectedRow,selectedRow);
+                System.out.println("Deneme--");
+            }
+        });
+
+        this.popupMenu.add("SİL").addActionListener(e -> {
+            int selectedId=Integer.parseInt(tbl_customers.getValueAt(tbl_customers.getSelectedRow(),0).toString());
+        });
+
+
+        this.popupMenu.add("GÜNCELLE").addActionListener(e->{
+            int selectedId=Integer.parseInt(tbl_customers.getValueAt(tbl_customers.getSelectedRow(),0).toString());
+        });
         this.tbl_customers.setComponentPopupMenu(this.popupMenu);
     }
 }
