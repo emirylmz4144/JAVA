@@ -8,8 +8,7 @@ import Entity.User;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class DashboardUI extends JFrame {
@@ -71,6 +70,7 @@ public class DashboardUI extends JFrame {
 
         loadCustomers(null);
         loadPopUpMenu();
+        loadCustomerAddNew();
 
 
     }
@@ -93,6 +93,7 @@ public class DashboardUI extends JFrame {
                     customer.getId(),
                     customer.getName(),
                     customer.getSurname(),
+                    customer.getPerson_type(),
                     customer.getPhone(),
                     customer.getE_mail(),
                     customer.getAddress()
@@ -120,13 +121,44 @@ public class DashboardUI extends JFrame {
 
         this.popupMenu.add("SİL").addActionListener(e -> {
             int selectedId=Integer.parseInt(tbl_customers.getValueAt(tbl_customers.getSelectedRow(),0).toString());
+            if (Helper.confirm("sure")){
+                if (this.customerController.delete(selectedId)){
+                    Helper.showAutoMessage("done");
+                    loadCustomers(null);
+                }
+                else {
+                    Helper.showAutoMessage("Silme işlemi başarısız");
+                }
+
+            }
         });
 
 
         this.popupMenu.add("GÜNCELLE").addActionListener(e->{
             int selectedId=Integer.parseInt(tbl_customers.getValueAt(tbl_customers.getSelectedRow(),0).toString());
+            CustomerUI customerUI=new CustomerUI(this.customerController.getById(selectedId));
+            customerUI.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    loadCustomers(null);
+                }
+            });
         });
+
         this.tbl_customers.setComponentPopupMenu(this.popupMenu);
+    }
+
+
+
+
+
+    public void loadCustomerAddNew(){
+        btn_filter_addnew.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CustomerUI customerUI=new CustomerUI(new Customer());
+            }
+        });
     }
 }
 

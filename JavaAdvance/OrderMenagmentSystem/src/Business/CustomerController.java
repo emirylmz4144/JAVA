@@ -9,6 +9,7 @@ import Entity.User;
 import java.util.ArrayList;
 
 public class CustomerController {
+
     CustomerDAO customerDAO;
 
     public CustomerController(){
@@ -30,7 +31,6 @@ public class CustomerController {
         return this.customerDAO.update(customer);
 
     }
-
 
 
     public boolean delete(int id){

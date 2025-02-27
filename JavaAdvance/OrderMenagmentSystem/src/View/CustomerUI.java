@@ -22,15 +22,17 @@ public class CustomerUI extends JFrame{
     private JLabel lbl_phone;
     private JLabel lbl_email;
     private JLabel lbl_address;
+
+
     private JTextArea txtarea_address;
     private JComboBox<Customer.Type> cmbBox_customer_type;
+
+
     private Customer customer;
     private CustomerController customerController;
 
     public CustomerUI(Customer customer){
-        JScrollPane scrollPane = new JScrollPane(conteiner);
-        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        this.add(scrollPane);
+
         this.customerController=new CustomerController();
         this.customer=customer;
         this.add(conteiner);
@@ -42,6 +44,11 @@ public class CustomerUI extends JFrame{
         this.setLocation(screenX, screenY);
         this.setVisible(true);
 
+
+        JScrollPane scrollPane = new JScrollPane(conteiner);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+        this.add(scrollPane);
         this.cmbBox_customer_type.setModel(new DefaultComboBoxModel<>(Customer.Type.values()));
 
 
