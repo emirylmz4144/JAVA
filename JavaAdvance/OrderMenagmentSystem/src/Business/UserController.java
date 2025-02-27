@@ -4,7 +4,11 @@ import Core.Helper;
 import DAO.UserDAO;
 import Entity.User;
 
+
+//Adminler için
 public class UserController {
+
+
     UserDAO userDAO;
 
     public UserController(){

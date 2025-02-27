@@ -87,11 +87,13 @@ public class Helper
     }
 
 
+    //Bazı otomotik mesaj butonlarında yazan textleri konfigüre eder
   public static void setTextConfiguration(){
         UIManager.put("OptionPane.okButtonText","TAMAM");
         UIManager.put("OptionPane.yesButtonText","EVET");
         UIManager.put("OptionPane.noButtonText","HAYIR");
     }
+
 
 
   public static boolean confirm(String message){
