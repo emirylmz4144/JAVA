@@ -92,7 +92,13 @@ public class CustomerUI extends JFrame{
                        result= customerController.save(customer);
                     }
                     else {
-                        result=customerController.update(customer);
+                        if (Helper.confirm("sure")){
+                            result=customerController.update(customer);
+                        }
+                        else {
+                            result=true;
+                        }
+
                     }
 
                     if (result){
@@ -101,6 +107,7 @@ public class CustomerUI extends JFrame{
                     }
                     else {
                         Helper.showAutoMessage("error");
+                        dispose();
                     }
                 }
             }

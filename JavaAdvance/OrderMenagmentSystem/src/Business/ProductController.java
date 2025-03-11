@@ -68,7 +68,7 @@ public class ProductController {
             else if (item.getKey()==2)
                 whereList.add("stock>=300 and stock <=599");
             else if (item.getKey()==3)
-                whereList.add("stock>=500 and stock <=799");
+                whereList.add("stock>=600 and stock <=799");
             else if (item.getKey()==4)
                 whereList.add("stock>=800 and stock <=1199");
             else if (item.getKey()==5)
@@ -76,11 +76,6 @@ public class ProductController {
             else
                 whereList.add("stock>=1500");
 
-            if (whereList.size()>0){
-                String wherequery=String.join(" and ",whereList);
-                query+=" where "+wherequery;
-            }
-            return productDAO.filterByQuery(query);
         }
 
         if (whereList.size()>0){

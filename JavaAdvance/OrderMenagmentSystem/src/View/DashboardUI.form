@@ -62,7 +62,7 @@
                       </component>
                     </children>
                   </scrollpane>
-                  <grid id="64896" binding="pnl_filter" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+                  <grid id="64896" binding="pnl__customer_filter" layout-manager="GridLayoutManager" row-count="2" column-count="5" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
                     <margin top="0" left="0" bottom="0" right="0"/>
                     <constraints>
                       <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
@@ -70,7 +70,7 @@
                     <properties/>
                     <border type="none"/>
                     <children>
-                      <component id="a3578" class="javax.swing.JLabel" binding="lbl_filter_name">
+                      <component id="a3578" class="javax.swing.JLabel" binding="lbl__customer_filter_name">
                         <constraints>
                           <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -78,7 +78,7 @@
                           <text value="MÜŞTERİ ADI"/>
                         </properties>
                       </component>
-                      <component id="1c477" class="javax.swing.JTextField" binding="txt_filter_name">
+                      <component id="1c477" class="javax.swing.JTextField" binding="txt_customer_filter_name">
                         <constraints>
                           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
                             <preferred-size width="150" height="-1"/>
@@ -86,7 +86,7 @@
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="9af80" class="javax.swing.JLabel" binding="lbl_filter_type">
+                      <component id="9af80" class="javax.swing.JLabel" binding="lbl_customer_filter_type">
                         <constraints>
                           <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -94,13 +94,13 @@
                           <text value="MÜŞTERİ TÜRÜ"/>
                         </properties>
                       </component>
-                      <component id="b2433" class="javax.swing.JComboBox" binding="cmbx_filter_type">
+                      <component id="b2433" class="javax.swing.JComboBox" binding="cmbx_customr_filter_type">
                         <constraints>
                           <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties/>
                       </component>
-                      <component id="435ac" class="javax.swing.JButton" binding="btn_filter_search">
+                      <component id="435ac" class="javax.swing.JButton" binding="btn_customer_filter_search">
                         <constraints>
                           <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -108,7 +108,7 @@
                           <text value="ARAMA YAP"/>
                         </properties>
                       </component>
-                      <component id="4dc0b" class="javax.swing.JButton" binding="btn_filter_clear">
+                      <component id="4dc0b" class="javax.swing.JButton" binding="btn_customer_filter_clear">
                         <constraints>
                           <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
@@ -116,9 +116,112 @@
                           <text value="TEMİZLE"/>
                         </properties>
                       </component>
-                      <component id="606c2" class="javax.swing.JButton" binding="btn_filter_addnew">
+                      <component id="606c2" class="javax.swing.JButton" binding="btn_customer_filter_addnew">
                         <constraints>
                           <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="YENİ EKLE"/>
+                        </properties>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </grid>
+              <grid id="39480" binding="pnl_products" layout-manager="GridLayoutManager" row-count="2" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+                <margin top="0" left="0" bottom="0" right="0"/>
+                <constraints>
+                  <tabbedpane title="Ürünler"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <scrollpane id="e5a69" binding="scrll_products">
+                    <constraints>
+                      <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="15130" class="javax.swing.JTable" binding="tbl_products">
+                        <constraints/>
+                        <properties/>
+                      </component>
+                    </children>
+                  </scrollpane>
+                  <grid id="6ce87" binding="pnl_product_filter" layout-manager="GridLayoutManager" row-count="2" column-count="6" same-size-horizontally="true" same-size-vertically="false" hgap="-1" vgap="-1">
+                    <margin top="0" left="0" bottom="0" right="0"/>
+                    <constraints>
+                      <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                    </constraints>
+                    <properties/>
+                    <border type="none"/>
+                    <children>
+                      <component id="f0acf" class="javax.swing.JLabel" binding="lbl_product_filter_name">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="ÜRÜN ADI"/>
+                        </properties>
+                      </component>
+                      <component id="e6f67" class="javax.swing.JTextField" binding="txt_filter_product_name">
+                        <constraints>
+                          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="1332b" class="javax.swing.JLabel" binding="lbl_product_filter_code">
+                        <constraints>
+                          <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="ÜRÜN KODU"/>
+                        </properties>
+                      </component>
+                      <component id="6ef0a" class="javax.swing.JTextField" binding="txt_product_filter_code">
+                        <constraints>
+                          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
+                            <preferred-size width="150" height="-1"/>
+                          </grid>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="7d6c6" class="javax.swing.JLabel" binding="lbl_product_stockAmo_filter">
+                        <constraints>
+                          <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="STOK DURUMU"/>
+                        </properties>
+                      </component>
+                      <component id="e55b2" class="javax.swing.JComboBox" binding="cmbx_product_stockAmo">
+                        <constraints>
+                          <grid row="1" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                      <component id="9d1f6" class="javax.swing.JButton" binding="btn_filter_product_search">
+                        <constraints>
+                          <grid row="1" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="ARAMA YAP"/>
+                        </properties>
+                      </component>
+                      <component id="5ecad" class="javax.swing.JButton" binding="btn_filter_product_clear">
+                        <constraints>
+                          <grid row="1" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+                        </constraints>
+                        <properties>
+                          <text value="TEMİZLE"/>
+                        </properties>
+                      </component>
+                      <component id="ff906" class="javax.swing.JButton" binding="btn_filter_product_addNew">
+                        <constraints>
+                          <grid row="1" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                         </constraints>
                         <properties>
                           <text value="YENİ EKLE"/>
