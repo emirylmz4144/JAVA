@@ -14,8 +14,6 @@ public class App {
     public static void main(String[] args) {
         Helper.setTheme();
         Helper.setTextConfiguration();
-        UserController userController=new UserController();
-        User user=userController.findByLogin("emir.yilmaz@example.com","sifre123");
-        DashboardUI dashboardUI=new DashboardUI(user);
+        LoginUI loginUI=new LoginUI();
     }
 }
