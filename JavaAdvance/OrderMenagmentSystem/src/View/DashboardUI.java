@@ -1,9 +1,11 @@
 package View;
 
+import Business.BasketController;
 import Business.CustomerController;
 import Business.ProductController;
 import Core.Helper;
 import Core.Item;
+import Entity.Basket;
 import Entity.Customer;
 import Entity.Product;
 import Entity.User;
@@ -13,6 +15,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Collections;
+
+import static java.util.Comparator.*;
 
 public class DashboardUI extends JFrame {
 
@@ -45,15 +50,35 @@ public class DashboardUI extends JFrame {
     private JButton btn_filter_product_search;
     private JButton btn_filter_product_clear;
     private JButton btn_filter_product_addNew;
+    private JPanel pnl_basket;
+    private JScrollPane scrll_basket;
+    private JTable tbl_basket_products;
+    private JPanel pnl_create_order;
+    private JLabel lbl_basket_select_customer;
+    private JComboBox cmbx_selected_customer;
+    private JLabel lbl_basket_count;
+    private JComboBox cmbx_total_product_count;
+    private JLabel lbl_basket_total_price;
+    private JLabel lbl_basket_price;
+    private JButton btn_clear;
+    private JButton btn_create_basket;
+    private JTextField txt_selected_product;
+    private JPanel pnl_orders;
+    private JTable tbl_all_orders;
+    private JScrollPane scrll_all_orders;
 
     private DefaultTableModel tableModelCustomers;
     private DefaultTableModel tableModelProducts;
+    private DefaultTableModel tableModelBasketProduct;
+    private DefaultTableModel tableModelAllBaskets;
     private JPopupMenu popupMenuCustomers;
     private JPopupMenu popupMenuProducts;
+    private JPopupMenu popupMenuBaskets;
 
 
     private CustomerController customerController;
     private ProductController productController;
+    private BasketController basketController;
 
 
     User user;
@@ -76,12 +101,16 @@ public class DashboardUI extends JFrame {
 
         this.tableModelCustomers =new DefaultTableModel();
         this.tableModelProducts=new DefaultTableModel();
+        this.tableModelBasketProduct=new DefaultTableModel();
+        this.tableModelAllBaskets=new DefaultTableModel();
 
         this.popupMenuCustomers =new JPopupMenu();
         this.popupMenuProducts= new JPopupMenu();
+        this.popupMenuBaskets=new JPopupMenu();
 
         this.customerController=new CustomerController();
         this.productController=new ProductController();
+        this.basketController=new BasketController();
 
 
         this.lbl_welcome.setText("Hoşgeldin : "+ this.user.getName()+" "+this.user.getSurname());
@@ -111,15 +140,33 @@ public class DashboardUI extends JFrame {
         this.cmbx_product_stockAmo.addItem(new Item(6,"1500+"));
         this.cmbx_product_stockAmo.setSelectedItem(null);
 
+        //BASKET TAB
+        loadProductForBasket(null);
+        setComboBoxCustomerAndTotalProductOnBasket();
+        loadPopUpMenuBaskets();
+        loadBasketButtonEvent();
+        this.cmbx_selected_customer.setSelectedItem(null);
+        this.cmbx_total_product_count.setSelectedItem(null);
+        this.cmbx_total_product_count.addActionListener(e -> updateTotalPrice());
+        this.txt_selected_product.setEnabled(false);
+
+
+        //Orders Tab
+        loadOrders(null);
 
     }
 
+
+
+
+    //  Customer Methods
     public void loadCustomers(ArrayList<Customer> customers){
 
         Object [] tableRows=new Object[]{"ID","AD","SOYAD","TİP","NUMARA","E-POSTA","ADRES"};
 
         if (customers==null){
             customers=this.customerController.getAll();
+            Collections.sort(customers, comparingInt(Customer::getId));
         }
 
         //Tabloyu sıfırladık
@@ -140,6 +187,7 @@ public class DashboardUI extends JFrame {
             tableModelCustomers.addRow(rowObject);
         }
         this.tbl_customers.setModel(tableModelCustomers);
+        this.tbl_customers.setRowHeight(50);
         this.tbl_customers.getTableHeader().setReorderingAllowed(false);
         this.tbl_customers.getColumnModel().getColumn(0).setMaxWidth(50);
         this.tbl_customers.setEnabled(false);
@@ -154,7 +202,7 @@ public class DashboardUI extends JFrame {
                 int selectedRow=tbl_customers.rowAtPoint(e.getPoint());
                 //Üzerine tıklananı tabloda düzenlenebilir elemean olarak ayarlıyor
                 tbl_customers.setRowSelectionInterval(selectedRow,selectedRow);
-                System.out.println("Deneme--");
+
             }
         });
 
@@ -164,6 +212,8 @@ public class DashboardUI extends JFrame {
                 if (this.customerController.delete(selectedId)){
                     Helper.showAutoMessage("done");
                     loadCustomers(null);
+                    cmbx_selected_customer.removeAllItems();
+                    setComboBoxCustomerAndTotalProductOnBasket();
                 }
                 else {
                     Helper.showAutoMessage("Silme işlemi başarısız");
@@ -180,6 +230,10 @@ public class DashboardUI extends JFrame {
                 @Override
                 public void windowClosed(WindowEvent e) {
                     loadCustomers(null);
+                    loadProductForBasket(null);
+                    cmbx_selected_customer.removeAllItems();
+                    setComboBoxCustomerAndTotalProductOnBasket();
+
                 }
             });
         });
@@ -204,6 +258,8 @@ public class DashboardUI extends JFrame {
                     @Override
                     public void windowClosed(WindowEvent e) {
                         loadCustomers(null);
+                        cmbx_selected_customer.removeAllItems();
+                        setComboBoxCustomerAndTotalProductOnBasket();
                     }
                 });
             }
@@ -221,10 +277,12 @@ public class DashboardUI extends JFrame {
 
 
 
+    //Product Methods
     public void loadProducts(ArrayList<Product> products){
         Object [] tableRows=new Object[]{"ID"," ÜRÜN ADI","ÜRÜN KODU","STOK MİKTARI","FİYAT"};
         if (products==null){
             products=this.productController.getAll();
+            Collections.sort(products, comparingInt(Product::getId));
         }
 
         //Tabloyu sıfırladık
@@ -246,6 +304,7 @@ public class DashboardUI extends JFrame {
         }
 
         this.tbl_products.setModel(tableModelProducts);
+        this.tbl_products.setRowHeight(50);
         this.tbl_products.getTableHeader().setReorderingAllowed(false);
         this.tbl_products.getColumnModel().getColumn(0).setMaxWidth(50);
         this.tbl_products.setEnabled(false);
@@ -261,9 +320,9 @@ public class DashboardUI extends JFrame {
                 int selectedRow=tbl_products.rowAtPoint(e.getPoint());
                 //Üzerine tıklananı tabloda düzenlenebilir elemean olarak ayarlıyor
                 tbl_products.setRowSelectionInterval(selectedRow,selectedRow);
-                System.out.println("Deneme--product");
             }
         });
+
 
         this.popupMenuProducts.add("SİL").addActionListener(e -> {
             int selectedId=Integer.parseInt(tbl_products.getValueAt(tbl_products.getSelectedRow(),0).toString());
@@ -302,7 +361,7 @@ public class DashboardUI extends JFrame {
                 loadProducts(null);
                 cmbx_product_stockAmo.setSelectedItem(null);
                 txt_filter_product_name.setText(null);
-                txt_product_filter_code.setText(null);
+                txt_product_filter_code.setText("0");
 
             }
         });
@@ -331,6 +390,172 @@ public class DashboardUI extends JFrame {
             loadProducts(filtredList);
         });
 
+    }
+
+
+
+    //Basket Methods
+    public void loadProductForBasket(ArrayList<Product> productForBasket){
+        Object [] tableRows=new Object[]{"ID"," ÜRÜN ADI","ÜRÜN KODU","STOK MİKTARI","FİYAT"};
+        if (productForBasket==null){
+            productForBasket=this.productController.getAll();
+            Collections.sort(productForBasket, comparingInt(Product::getId));
+        }
+        //Tabloyu sıfırladık
+        DefaultTableModel clearModel=(DefaultTableModel) this.tbl_basket_products.getModel();
+        clearModel.setRowCount(0);
+
+        this.tableModelBasketProduct.setColumnIdentifiers(tableRows);
+
+        for (Product product: productForBasket) {
+            Object [] rowObject ={
+                    product.getId(),
+                    product.getName(),
+                    product.getCode(),
+                    product.getStock(),
+                    product.getPrice()
+
+            };
+            tableModelBasketProduct.addRow(rowObject);
+        }
+
+        this.tbl_basket_products.setModel(tableModelBasketProduct);
+        this.tbl_basket_products.setRowHeight(50);
+        this.tbl_basket_products.getTableHeader().setReorderingAllowed(false);
+        this.tbl_basket_products.getColumnModel().getColumn(0).setMaxWidth(50);
+        this.tbl_basket_products.setEnabled(false);
+    }
+
+    public void loadPopUpMenuBaskets(){
+        //Tabloda üzerine tıklanan hücrenin düzenlenmesi için mouse dinleyici koyuyoruz
+        tbl_basket_products.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //Üzerine tıklananı seçiyor
+                int selectedRow=tbl_basket_products.rowAtPoint(e.getPoint());
+                //Üzerine tıklananı tabloda düzenlenebilir elemean olarak ayarlıyor
+                tbl_basket_products.setRowSelectionInterval(selectedRow,selectedRow);
+            }
+        });
+
+
+        this.popupMenuBaskets.add("SEÇ").addActionListener(e->{
+
+            int selectedRow = tbl_basket_products.getSelectedRow();
+            if (selectedRow != -1) { // Seçili satır var mı kontrol et
+                String code = tbl_basket_products.getValueAt(selectedRow, 2).toString();
+                txt_selected_product.setText(code);
+
+                // Fiyatı güncelleyen metod
+                updateTotalPrice();
+            }
+        });
+
+
+        this.tbl_basket_products.setComponentPopupMenu(this.popupMenuBaskets);
+    }
+
+    public void loadBasketButtonEvent(){
+
+        btn_clear.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cmbx_selected_customer.setSelectedItem(null);
+                cmbx_total_product_count.setSelectedItem(null);
+                txt_selected_product.setText(null);
+                lbl_basket_price.setText(null);
+            }
+        });
+
+        btn_create_basket.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (cmbx_selected_customer.getSelectedItem()==null || txt_selected_product.getText().equals("") ||cmbx_total_product_count.getSelectedItem()==null){
+                    Helper.showAutoMessage("Lütfen sipariş bilgilerini doğru giriniz");
+                }
+                else {
+                    Product product=productController.getProductByCode(txt_selected_product.getText());
+                    Customer customer=customerController.getByName(cmbx_selected_customer.getSelectedItem().toString());
+                    int totalPrice=Integer.parseInt(lbl_basket_price.getText());
+
+
+                    Basket basket=new Basket(product.getId(),customer.getId(),product.getName(),product.getCode(),customer.getName(),customer.getAddress(),totalPrice);
+
+                    if (product.getStock()-Integer.parseInt(cmbx_total_product_count.getSelectedItem().toString())<0){
+                        Helper.showAutoMessage("Stok sayısından fazla ürün alamazsınız");
+                    }
+                    else if (Helper.confirm("sure")){
+                        if (basketController.save(basket)){
+                            Helper.showAutoMessage("done");
+
+                            product.setStock(product.getStock()-Integer.parseInt(cmbx_total_product_count.getSelectedItem().toString()));
+                            productController.update(product);
+
+                            loadOrders(null);
+                            loadProducts(null);
+                            loadProductForBasket(null);
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    public void setComboBoxCustomerAndTotalProductOnBasket(){
+        ArrayList<Customer> customerList=this.customerController.getAll();
+        for (Customer customer: customerList) {
+            this.cmbx_selected_customer.addItem(customer.getName());
+        }
+
+        for (int i=1;i<=10;i++){
+            cmbx_total_product_count.addItem(i);
+        }
+    }
+
+    private void updateTotalPrice() {
+        int selectedRow = tbl_basket_products.getSelectedRow();
+        if (selectedRow != -1 && cmbx_total_product_count.getSelectedItem() != null) {
+            int price = Integer.parseInt(tbl_basket_products.getValueAt(selectedRow, 4).toString());
+            int quantity = Integer.parseInt(cmbx_total_product_count.getSelectedItem().toString());
+            lbl_basket_price.setText(String.valueOf(price * quantity));
+        }
+    }
+
+
+    //Orders method
+    public void loadOrders(ArrayList<Basket> baskets){
+        Object [] tableRows=new Object[]{"SİPARİŞ ID","MÜŞTERİ ID","ÜRÜN ADI","ÜRÜN KODU","MÜŞTERİ ADI","MÜŞTERİ ADRESİ","TOPLAM HARCAMA"};
+        if (baskets==null){
+            baskets=this.basketController.getAll();
+            Collections.sort(baskets, comparing(Basket::getId));
+        }
+
+        DefaultTableModel clearModel=(DefaultTableModel) this.tbl_all_orders.getModel();
+        clearModel.setRowCount(0);
+
+        this.tableModelAllBaskets.setColumnIdentifiers(tableRows);
+
+        for (Basket basket : baskets){
+                Object [] rowObjects={
+                        basket.getId(),
+                        basket.getProduct_id(),
+                        basket.getCustomer_id(),
+                        basket.getProduct_name(),
+                        basket.getProduct_code(),
+                        basket.getCustomer_name(),
+                        basket.getCustomer_address(),
+                        basket.getTotalPrice()
+                };
+                tableModelAllBaskets.addRow(rowObjects);
+
+
+        }
+
+        this.tbl_all_orders.setModel(tableModelAllBaskets);
+        this.tbl_all_orders.setRowHeight(50);
+        this.tbl_all_orders.getTableHeader().setReorderingAllowed(false);
+        this.tbl_all_orders.getColumnModel().getColumn(0).setMaxWidth(50);
+        this.tbl_all_orders.setEnabled(false);
     }
 }
 

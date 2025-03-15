@@ -49,6 +49,10 @@ public class ProductController {
         return this.productDAO.getById(id);
     }
 
+    public Product getProductByCode(String code){
+        return this.productDAO.getProductByCode(code);
+    }
+
     public ArrayList<Product> filter(String productName,String productCode, Item item){
         System.out.println("name "+productCode);
         System.out.println("code "+productCode);

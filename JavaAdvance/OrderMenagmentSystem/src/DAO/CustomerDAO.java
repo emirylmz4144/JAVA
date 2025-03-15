@@ -92,6 +92,22 @@ public class CustomerDAO {
             return customer;
         }
 
+    public Customer getCustomerByName(String name) {
+        String query="SELECT * FROM customers WHERE name = ?";
+        Customer customer=null;
+        try{
+            PreparedStatement ps=this.connection.prepareStatement(query);
+            ps.setString(1,name);
+            ResultSet rs=ps.executeQuery();
+            if(rs.next()){
+                customer=this.match(rs);
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return customer;
+    }
+
         public ArrayList<Customer> filterByQuery(String query){
             ArrayList<Customer> customerList=new ArrayList<>();
             try {

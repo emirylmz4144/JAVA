@@ -69,5 +69,8 @@ public class CustomerController {
         return this.customerDAO.getById(id);
     }
 
+    public Customer getByName(String name){
+        return this.customerDAO.getCustomerByName(name);
+    }
 
 }

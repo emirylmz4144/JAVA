@@ -120,6 +120,22 @@ public class ProductDAO {
     }
 
 
+    public Product getProductByCode(String code) {
+        String query="SELECT * FROM products WHERE code = ?";
+        Product product=null;
+        try{
+            PreparedStatement ps=this.connection.prepareStatement(query);
+            ps.setString(1,code);
+            ResultSet rs=ps.executeQuery();
+            if(rs.next()){
+                product=this.match(rs);
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return product;
+    }
+
     public Product match(ResultSet result) throws SQLException{
         Product product=new Product();
         product.setId(result.getInt("id"));
